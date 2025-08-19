@@ -1,9 +1,101 @@
 ---
-name: "..."
-description: "..."
+name: purpose-configuration-action
+description: "Reads the configuration defined by the locator_url"
 inputs:
-  ...
+  aws_region:
+    description: "The AWS region to deploy to"
+    required: false
+    default: ""
+  aws_role:
+    description: "The AWS role for the connection"
+    required: false
+    default: ""
+  cluster_name:
+    description: "The name of the cluster"
+    required: false
+    default: ""
+  locator_url:
+    description: "The URL of properties file that defines aws_region, aws_role, cluster_name, deployment_gate."
+    required: false
+    default: ""
+  locator_url_bearer:
+    description: "A authentication bearer with read access to locator_url."
+    required: false
+    default: ""
+  locator_url_token:
+    description: "An authentication token with read access to locator_url."
+    required: false
+    default: ""
 outputs:
-  ...
+  aws_region:
+    description: "The AWS region to deploy to"
+    value: ${{ steps.purpose_config.outputs.aws_region }}
+  aws_role:
+    description: "The AWS role for the connection"
+    value: ${{ steps.purpose_config.outputs.aws_role }}
+  cluster_name:
+    description: "The name of the cluster"
+    value: ${{ steps.purpose_config.outputs.cluster_name }}
+  deployment_gate:
+    description: "The deployment gate mode, defaults to `manual`"
+    value: ${{ steps.purpose_config.outputs.deployment_gate }}
 runs:
-  ...
+  using: "composite"
+  steps:
+    - name: "Extract purpose configuration"
+      id: purpose_config
+      shell: bash
+      run: |
+        [ "${RUNNER_DEBUG}" == 1 ] && set -xv
+        set -u
+        
+        function configureFrom() {
+          # configure $1 = $2:
+          # $1: github variable name
+          # $2: value
+          # $3: default for value
+          echo "${1}=${2:-${3:-}}" >>"${GITHUB_OUTPUT}"
+        }
+
+        function configureFromLocator() {
+          # configure $1 from $2:
+          # $1: github variable name
+          # $2: variable name in the configuration file; defaults to github's variable name 
+          # $3: default for value
+          configureFrom "${1}" "$(sed -n -e "s/^${2:-$1}=//p" "${purpose_configuration}")" "${3:-}"
+        }
+        
+        if [ -n "${{ inputs.locator_url }}" ] && ( [ -n "${{ inputs.aws_region }}" ] || [ -n "${{ inputs.aws_role }}" ] || [ -n "${{ inputs.cluster_name }}" ] ); then
+          echo "::error Can't have both locator_url and aws_region, aws_role, cluster_name parameters"
+          exit 1;
+        elif [ -n "${{ inputs.locator_url }}" ]; then
+          readonly purpose_configuration="${RUNNER_TEMP}/locator.properties"
+          readonly headers="${RUNNER_TEMP}/headers"
+
+          rm -f "${headers}"
+          if [[ "${{ inputs.locator_url }}" == "https://api.github.com/repos/"* ]]; then
+            echo "Accept: application/vnd.github.raw" >>"${headers}"
+            echo "X-GitHub-Api-Version: 2022-11-28" >>"${headers}"
+          fi
+          [ -n "${{ inputs.locator_url_bearer }}" ] && echo "Authorization: Bearer ${{ inputs.locator_url_bearer }}" >>"${headers}"
+          [ -n "${{ inputs.locator_url_token }}" ] && echo "Authorization: token ${{ inputs.locator_url_token }}" >>"${headers}"
+          curl  --location \
+            --header @${headers} \
+            --output "${purpose_configuration}" \
+            "${{ inputs.locator_url }}"
+        
+          cat ${purpose_configuration} 
+        
+          configureFromLocator aws_role
+          configureFromLocator aws_region
+          configureFromLocator cluster_name
+          configureFromLocator deployment_gate deployment_gate manual
+        elif [ -n "${{ inputs.aws_region }}" ] && [ -n "${{ inputs.aws_role }}" ] && [ -n "${{ inputs.cluster_name }}" ]; then
+          configureFrom aws_role "${{ inputs.aws_role }}"
+          configureFrom aws_region "${{ inputs.aws_region }}"
+          configureFrom cluster_name "${{ inputs.cluster_name }}"
+          configureFrom deployment_gate "manual"
+        else
+          echo "::error Must define either locator_url or aws_region, aws_role, cluster_name"
+          exit 1;
+        fi
