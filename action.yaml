@@ -94,7 +94,7 @@ runs:
           configureFrom aws_role "${{ inputs.aws_role }}"
           configureFrom aws_region "${{ inputs.aws_region }}"
           configureFrom cluster_name "${{ inputs.cluster_name }}"
-          configureFrom deployment_gate "manual"
+          configureFrom deployment_gate "none"
         else
           echo "::error Must define either locator_url or aws_region, aws_role, cluster_name"
           exit 1;

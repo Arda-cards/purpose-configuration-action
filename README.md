@@ -8,12 +8,12 @@ This set defines the minimal configuration required to deploy a component to a p
 
 The resource designated by the `locator_url` is in the properties format, keys and values separated by an equal sign.
 
-| Key | Required | Description |
-|-----|----------|-------------|
-| aws_role | yes | The arn of a rol that GitHub can assume, |
-| aws_region | yes | The AWS region to connect to for authentication. |
-| cluster_name | yes | The name of a Kubernetes cluster to deploy components to. |
-| deployment_gate | no, defaults to `manual` | `none` to automatically proceed with the deployment, `manual` to wait for approval. |
+| Key             | Required               | Description                                                                         |
+|-----------------|------------------------|-------------------------------------------------------------------------------------|
+| aws_role        | yes                    | The arn of a rol that GitHub can assume.                                            |
+| aws_region      | yes                    | The AWS region to connect to for authentication.                                    |
+| cluster_name    | yes                    | The name of a Kubernetes cluster to deploy components to.                           |
+| deployment_gate | no, defaults to `none` | `none` to automatically proceed with the deployment, `manual` to wait for approval. |
 
 ## Arguments
 
