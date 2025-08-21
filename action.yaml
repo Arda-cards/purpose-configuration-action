@@ -89,7 +89,7 @@ runs:
           configureFromLocator aws_role
           configureFromLocator aws_region
           configureFromLocator cluster_name
-          configureFromLocator deployment_gate deployment_gate manual
+          configureFromLocator deployment_gate deployment_gate "none"
         elif [ -n "${{ inputs.aws_region }}" ] && [ -n "${{ inputs.aws_role }}" ] && [ -n "${{ inputs.cluster_name }}" ]; then
           configureFrom aws_role "${{ inputs.aws_role }}"
           configureFrom aws_region "${{ inputs.aws_region }}"
