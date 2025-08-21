@@ -18,6 +18,12 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [1.0.2] - 2025-08-21
+
+### Fixed
+
+- Default `deployment_gate` must be `none` for backward compatibility in both scenario
+
 ## [1.0.1] - 2025-08-20
 
 ### Fixed
