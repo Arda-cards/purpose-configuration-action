@@ -30,6 +30,7 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   It is an asynchronous event-based process that might take a minute or two to complete.
 - Makefile provides for local execution of super-linter.
 - Super-linter configured to skip biome.
+- Bump `actions/checkout` from 5 to 6.
 
 ## [1.0.2] - 2025-08-21
 
