@@ -22,12 +22,14 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
 
 ### Added
 
-- As a convenience, extract the aws account id from the role and export it as the output `aws_account_id`.
+- As a convenience, extract the aws account ID from the role and export it as the output `aws_account_id`.
 
 ### Fixed
 
 - Automatically annotate new pull-requests with the *assignee*, the *project*, the *iteration* and the *status*.
   It is an asynchronous event-based process that might take a minute or two to complete.
+- Makefile provides for local execution of super-linter.
+- Super-linter configured to skip biome.
 
 ## [1.0.2] - 2025-08-21
 
