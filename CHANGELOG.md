@@ -18,7 +18,11 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
-## [1.0.3] - 2026-01-19
+## [1.1.0] - 2026-01-19
+
+### Added
+
+- As a convenience, extract the aws account id from the role and export it as the output `aws_account_id`.
 
 ### Fixed
 
