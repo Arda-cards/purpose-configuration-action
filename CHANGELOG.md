@@ -18,6 +18,13 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [1.0.3] - 2026-01-19
+
+### Fixed
+
+- Automatically annotate new pull-requests with the *assignee*, the *project*, the *iteration* and the *status*.
+  It is an asynchronous event-based process that might take a minute or two to complete.
+
 ## [1.0.2] - 2025-08-21
 
 ### Fixed
