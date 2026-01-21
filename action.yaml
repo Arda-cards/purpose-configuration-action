@@ -27,6 +27,9 @@ inputs:
     required: false
     default: ""
 outputs:
+  aws_account_id:
+    description: "The AWS account ID for the connection"
+    value: ${{ steps.purpose_config.outputs.aws_account_id }}
   aws_region:
     description: "The AWS region to deploy to"
     value: ${{ steps.purpose_config.outputs.aws_region }}
@@ -55,6 +58,10 @@ runs:
           # $2: value
           # $3: default for value
           echo "${1}=${2:-${3:-}}" >>"${GITHUB_OUTPUT}"
+          if [ "${1}" == "aws_role" ]; then
+            # extract account id from role arn
+            echo "aws_account_id=$(echo "${2:-${3:-}}" | cut -d : -f 5)" >>"${GITHUB_OUTPUT}"
+          fi
         }
 
         function configureFromLocator() {

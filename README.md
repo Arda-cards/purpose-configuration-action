@@ -23,15 +23,14 @@ See [action.yaml](action.yaml).
 
 ```yaml
 - id: purpose_config
-uses: Arda-cards/purpose-configuration-action@v2
-with:
-locator_url: "${{ vars.PURPOSE_LOCATOR_BASE_URL }}/dev.properties?ref=v1"
-locator_url_token: "${{ secrets.PURPOSE_LOCATOR_READER_TOKEN }}"
+  uses: Arda-cards/purpose-configuration-action@v2
+  with:
+    locator_url: "${{ vars.PURPOSE_LOCATOR_BASE_URL }}/dev.properties?ref=v1"
+    locator_url_token: "${{ secrets.PURPOSE_LOCATOR_READER_TOKEN }}"
 ```
 
 ## Permission Required
 
 ```yaml
-permissions:
-{}
+permissions: {}
 ```

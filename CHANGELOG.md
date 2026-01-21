@@ -18,6 +18,20 @@ Categories, defined in [changemap.json](.github/clq/changemap.json):
   - `Fixed` for any bugfixes.
   - `Security` in case of vulnerabilities.
 
+## [1.1.0] - 2026-01-19
+
+### Added
+
+- As a convenience, extract the aws account ID from the role and export it as the output `aws_account_id`.
+
+### Fixed
+
+- Automatically annotate new pull-requests with the *assignee*, the *project*, the *iteration* and the *status*.
+  It is an asynchronous event-based process that might take a minute or two to complete.
+- Makefile provides for local execution of super-linter.
+- Super-linter configured to skip biome.
+- Bump `actions/checkout` from 5 to 6.
+
 ## [1.0.2] - 2025-08-21
 
 ### Fixed
